@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6211" systemVersion="14A298i" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6204"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
         <!--View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="project19_mapKit" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
@@ -15,11 +17,144 @@
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fvR-Jg-G15">
+                                <rect key="frame" x="20" y="544" width="75" height="30"/>
+                                <color key="backgroundColor" red="1" green="0.71703828250000001" blue="0.92517365039999999" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="110" id="MG9-t8-3zs"/>
+                                </constraints>
+                                <state key="normal" title="Search"/>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="MG9-t8-3zs"/>
+                                    </mask>
+                                </variation>
+                                <variation key="widthClass=compact" ambiguous="YES" misplaced="YES">
+                                    <rect key="frame" x="120" y="525" width="110" height="30"/>
+                                    <mask key="constraints">
+                                        <include reference="MG9-t8-3zs"/>
+                                    </mask>
+                                </variation>
+                                <connections>
+                                    <action selector="annotation:" destination="BYZ-38-t0r" eventType="touchUpInside" id="E3Q-fM-yyO"/>
+                                </connections>
+                            </button>
+                            <slider opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="20" minValue="1" maxValue="200" translatesAutoresizingMaskIntoConstraints="NO" id="NWR-lk-NYI">
+                                <rect key="frame" x="15" y="439" width="182" height="31"/>
+                                <variation key="widthClass=compact" ambiguous="YES" misplaced="YES">
+                                    <rect key="frame" x="34" y="371" width="248" height="31"/>
+                                </variation>
+                                <connections>
+                                    <action selector="distanceSlider:" destination="BYZ-38-t0r" eventType="valueChanged" id="y0J-QL-HX2"/>
+                                </connections>
+                            </slider>
+                            <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="20" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CAc-k4-KsB">
+                                <rect key="frame" x="224" y="448" width="21" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="19"/>
+                                <color key="textColor" name="selectedMenuItemColor" catalog="System" colorSpace="catalog"/>
+                                <nil key="highlightedColor"/>
+                                <variation key="widthClass=compact" misplaced="YES">
+                                    <rect key="frame" x="320" y="376" width="49" height="25"/>
+                                </variation>
+                            </label>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="0ax-Cw-jwN">
+                                <rect key="frame" x="52" y="20" width="382" height="374"/>
+                                <connections>
+                                    <outlet property="delegate" destination="BYZ-38-t0r" id="6Ud-pV-Kpb"/>
+                                </connections>
+                            </mapView>
+                            <pickerView contentMode="center" translatesAutoresizingMaskIntoConstraints="NO" id="k9c-Z4-6z8">
+                                <rect key="frame" x="0.0" y="-216" width="320" height="216"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="tintColor" red="0.50196081400000003" green="1" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <variation key="widthClass=compact" ambiguous="YES" misplaced="YES">
+                                    <rect key="frame" x="28" y="420" width="276" height="78"/>
+                                </variation>
+                            </pickerView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="fvR-Jg-G15" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="5eC-gH-2Yh"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="0ax-Cw-jwN" secondAttribute="bottom" constant="243" id="7t4-6o-zUe"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="CAc-k4-KsB" secondAttribute="trailing" constant="11" id="C7i-Ue-YcR"/>
+                            <constraint firstItem="0ax-Cw-jwN" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="33" id="CLK-3J-jS2">
+                                <variation key="widthClass=compact" constant="0.0"/>
+                            </constraint>
+                            <constraint firstItem="CAc-k4-KsB" firstAttribute="top" secondItem="0ax-Cw-jwN" secondAttribute="bottom" constant="19" id="Dbe-dP-lUr">
+                                <variation key="widthClass=compact" constant="20"/>
+                            </constraint>
+                            <constraint firstItem="0ax-Cw-jwN" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="TbB-LH-LSR"/>
+                            <constraint firstItem="fvR-Jg-G15" firstAttribute="top" secondItem="k9c-Z4-6z8" secondAttribute="bottom" constant="43" id="U2f-hf-fzg">
+                                <variation key="widthClass=compact" constant="30"/>
+                            </constraint>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="fvR-Jg-G15" secondAttribute="bottom" constant="34" id="Xd5-PV-6ei">
+                                <variation key="widthClass=compact" constant="25"/>
+                            </constraint>
+                            <constraint firstItem="k9c-Z4-6z8" firstAttribute="top" secondItem="NWR-lk-NYI" secondAttribute="bottom" constant="3" id="YD7-NA-5f3">
+                                <variation key="widthClass=compact" constant="10"/>
+                            </constraint>
+                            <constraint firstItem="NWR-lk-NYI" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="7" id="qIw-so-vLs"/>
+                            <constraint firstItem="NWR-lk-NYI" firstAttribute="top" secondItem="0ax-Cw-jwN" secondAttribute="bottom" constant="14" id="tzC-sV-sNk">
+                                <variation key="widthClass=compact" constant="15"/>
+                            </constraint>
+                            <constraint firstAttribute="trailingMargin" secondItem="NWR-lk-NYI" secondAttribute="trailing" constant="175" id="yNj-7a-ZxB">
+                                <variation key="widthClass=compact" constant="40"/>
+                            </constraint>
+                            <constraint firstItem="0ax-Cw-jwN" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="47" id="zNg-0Z-3oE">
+                                <variation key="widthClass=compact" constant="0.0"/>
+                            </constraint>
+                        </constraints>
+                        <variation key="default">
+                            <mask key="subviews">
+                                <exclude reference="k9c-Z4-6z8"/>
+                            </mask>
+                            <mask key="constraints">
+                                <exclude reference="CLK-3J-jS2"/>
+                                <exclude reference="TbB-LH-LSR"/>
+                                <exclude reference="zNg-0Z-3oE"/>
+                                <exclude reference="qIw-so-vLs"/>
+                                <exclude reference="tzC-sV-sNk"/>
+                                <exclude reference="yNj-7a-ZxB"/>
+                                <exclude reference="YD7-NA-5f3"/>
+                                <exclude reference="C7i-Ue-YcR"/>
+                                <exclude reference="Dbe-dP-lUr"/>
+                                <exclude reference="5eC-gH-2Yh"/>
+                                <exclude reference="U2f-hf-fzg"/>
+                                <exclude reference="7t4-6o-zUe"/>
+                                <exclude reference="Xd5-PV-6ei"/>
+                            </mask>
+                        </variation>
+                        <variation key="widthClass=compact">
+                            <mask key="subviews">
+                                <include reference="k9c-Z4-6z8"/>
+                            </mask>
+                            <mask key="constraints">
+                                <include reference="CLK-3J-jS2"/>
+                                <include reference="TbB-LH-LSR"/>
+                                <include reference="zNg-0Z-3oE"/>
+                                <include reference="qIw-so-vLs"/>
+                                <include reference="tzC-sV-sNk"/>
+                                <include reference="yNj-7a-ZxB"/>
+                                <include reference="YD7-NA-5f3"/>
+                                <include reference="C7i-Ue-YcR"/>
+                                <include reference="Dbe-dP-lUr"/>
+                                <include reference="5eC-gH-2Yh"/>
+                                <include reference="U2f-hf-fzg"/>
+                                <include reference="7t4-6o-zUe"/>
+                                <include reference="Xd5-PV-6ei"/>
+                            </mask>
+                        </variation>
                     </view>
+                    <connections>
+                        <outlet property="distanceLabel" destination="CAc-k4-KsB" id="mPz-PI-DI8"/>
+                        <outlet property="mapView" destination="0ax-Cw-jwN" id="qhm-92-8eT"/>
+                        <outlet property="myPicker" destination="k9c-Z4-6z8" id="auF-Sr-Jtx"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="-502.5" y="319"/>
         </scene>
     </scenes>
 </document>
