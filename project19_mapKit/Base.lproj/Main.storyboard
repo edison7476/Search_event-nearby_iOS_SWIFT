@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="Qxo-Cv-BHd">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
@@ -15,7 +15,7 @@
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fvR-Jg-G15">
@@ -60,6 +60,9 @@
                             </label>
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="0ax-Cw-jwN">
                                 <rect key="frame" x="52" y="20" width="382" height="374"/>
+                                <variation key="widthClass=compact" misplaced="YES">
+                                    <rect key="frame" x="16" y="20" width="288" height="337"/>
+                                </variation>
                                 <connections>
                                     <outlet property="delegate" destination="BYZ-38-t0r" id="6Ud-pV-Kpb"/>
                                 </connections>
@@ -110,13 +113,13 @@
                                 <exclude reference="k9c-Z4-6z8"/>
                             </mask>
                             <mask key="constraints">
+                                <exclude reference="YD7-NA-5f3"/>
                                 <exclude reference="CLK-3J-jS2"/>
                                 <exclude reference="TbB-LH-LSR"/>
                                 <exclude reference="zNg-0Z-3oE"/>
                                 <exclude reference="qIw-so-vLs"/>
                                 <exclude reference="tzC-sV-sNk"/>
                                 <exclude reference="yNj-7a-ZxB"/>
-                                <exclude reference="YD7-NA-5f3"/>
                                 <exclude reference="C7i-Ue-YcR"/>
                                 <exclude reference="Dbe-dP-lUr"/>
                                 <exclude reference="5eC-gH-2Yh"/>
@@ -130,13 +133,13 @@
                                 <include reference="k9c-Z4-6z8"/>
                             </mask>
                             <mask key="constraints">
+                                <include reference="YD7-NA-5f3"/>
                                 <include reference="CLK-3J-jS2"/>
                                 <include reference="TbB-LH-LSR"/>
                                 <include reference="zNg-0Z-3oE"/>
                                 <include reference="qIw-so-vLs"/>
                                 <include reference="tzC-sV-sNk"/>
                                 <include reference="yNj-7a-ZxB"/>
-                                <include reference="YD7-NA-5f3"/>
                                 <include reference="C7i-Ue-YcR"/>
                                 <include reference="Dbe-dP-lUr"/>
                                 <include reference="5eC-gH-2Yh"/>
@@ -146,6 +149,8 @@
                             </mask>
                         </variation>
                     </view>
+                    <tabBarItem key="tabBarItem" systemItem="search" id="GXr-1s-0b6"/>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
                     <connections>
                         <outlet property="distanceLabel" destination="CAc-k4-KsB" id="mPz-PI-DI8"/>
                         <outlet property="mapView" destination="0ax-Cw-jwN" id="qhm-92-8eT"/>
@@ -154,7 +159,54 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-502.5" y="319"/>
+            <point key="canvasLocation" x="156" y="231"/>
+        </scene>
+        <!--Favorite Table View Controller-->
+        <scene sceneID="ncz-0n-OIy">
+            <objects>
+                <tableViewController id="2oP-Af-87Z" customClass="favoriteTableViewController" customModule="project19_mapKit" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="LDf-GS-D7S">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="favCell" id="J86-ia-4pz">
+                                <rect key="frame" x="0.0" y="28" width="600" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="J86-ia-4pz" id="uuQ-K5-J47">
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="43"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="2oP-Af-87Z" id="AzN-xs-pBu"/>
+                            <outlet property="delegate" destination="2oP-Af-87Z" id="1lW-GV-JbW"/>
+                        </connections>
+                    </tableView>
+                    <tabBarItem key="tabBarItem" systemItem="favorites" id="z6b-NM-qrC"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="eSk-VR-jJQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-121.5" y="997"/>
+        </scene>
+        <!--Tab Bar Controller-->
+        <scene sceneID="yV6-Uo-qYC">
+            <objects>
+                <tabBarController automaticallyAdjustsScrollViewInsets="NO" id="Qxo-Cv-BHd" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <tabBar key="tabBar" contentMode="scaleToFill" id="IeR-QQ-mAG">
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    </tabBar>
+                    <connections>
+                        <segue destination="BYZ-38-t0r" kind="relationship" relationship="viewControllers" id="h8l-Ev-4Ee"/>
+                        <segue destination="2oP-Af-87Z" kind="relationship" relationship="viewControllers" id="kke-iM-7ar"/>
+                    </connections>
+                </tabBarController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="sgb-N6-pWg" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-523.5" y="231"/>
         </scene>
     </scenes>
 </document>

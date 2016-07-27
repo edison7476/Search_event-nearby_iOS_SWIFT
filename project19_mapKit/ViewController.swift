@@ -13,13 +13,20 @@ import CoreLocation
 
 
 class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDelegate, UIPickerViewDataSource, UIPickerViewDelegate {
-
+    
+    
     let locationManager = CLLocationManager()
     var currentLatitude: CLLocationDegrees?
     var currentLogitude: CLLocationDegrees?
     var selectedDate: String?
     var selectedCategory: String?
-
+    
+    var savedEvents = [EventTable]()
+    var favEvent: EventTable?
+    
+    let manageObjContext = (UIApplication.sharedApplication().delegate as! AppDelegate).managedObjectContext
+    
+  
     
     @IBOutlet weak var distanceLabel: UILabel!
     
@@ -28,7 +35,6 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         distanceLabel.text = "\(sliderValue)"
     }
     @IBOutlet weak var myPicker: UIPickerView!
-    
     
     func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         
@@ -55,43 +61,45 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
                 // Try converting the JSON object to "Foundation Types" (NSDictionary, NSArray, NSString, etc.)
                 if let jsonResult = try NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.MutableContainers) as? NSDictionary {
                     print(" ### jsonResults ###")
-                    self.mapView.removeAnnotations(self.mapView.annotations)
+                    //self.mapView.removeAnnotations(self.mapView.annotations)
                     if let results = jsonResult["events"]!["event"]{
-                        print(results)
+                       // print(results)
                         let resultsArray = results as! NSArray!
                         
                         //print(resultsArray)
-                     
-                            
-                            dispatch_async(dispatch_get_main_queue(), {
-                                for i in 0..<resultsArray.count{
-                                    
-                                    let pinTitle = String(resultsArray[i]["title"]!!)
-                                    let pinSubtitle = String(resultsArray[i]["url"]!!)
-                                    let pinDescription = String(resultsArray[i]["description"]!!)
-                                    let pinLat =   Double(String(resultsArray[i]["latitude"]!!))
-                                    let pinLng = Double(String(resultsArray[i]["longitude"]!!))
-                                    let startTime = String(resultsArray[i]["start_time"]!!)
-                                    let venueName = String(resultsArray[i]["venue_name"]!!)
-                                    let venuewAddress = String(resultsArray[i]["venue_address"]!!)
-                                    let cityName = String(resultsArray[i]["city_name"]!!)
-                                    
-                                    print(pinTitle)
-                                    print(pinSubtitle)
-                                    print(pinLat)
-                                    print(pinLng)
-                                    let pinLocation : CLLocationCoordinate2D = CLLocationCoordinate2DMake(CLLocationDegrees(pinLat!), CLLocationDegrees( pinLng!))
-                                    
-                                    //let objectAnnotation = MKPointAnnotation()
-                                    //
-                                    //                           objectAnnotation.coordinate = pinLocation
-                                    //                            objectAnnotation.title = pinTitle
-                                    //                            objectAnnotation.subtitle = pinSubtitle
-                                    
-                                    let objectAnnotation = Capital(title: pinTitle, subtitle: "", coordinate: pinLocation, info: [startTime, venueName, venuewAddress, cityName, pinDescription])
-                                self.mapView.addAnnotation(objectAnnotation)}
+                        
+                        
+                        dispatch_async(dispatch_get_main_queue(), {
+                            self.mapView.removeAnnotations(self.mapView.annotations)
+                            for i in 0..<resultsArray.count{
+                                
+                                let pinTitle = String(resultsArray[i]["title"]!!)
+                                let pinSubtitle = String(resultsArray[i]["url"]!!)
+                                let pinDescription = String(resultsArray[i]["description"]!!)
+                                let pinLat =   Double(String(resultsArray[i]["latitude"]!!))
+                                let pinLng = Double(String(resultsArray[i]["longitude"]!!))
+                                let startTime = String(resultsArray[i]["start_time"]!!)
+                                let venueName = String(resultsArray[i]["venue_name"]!!)
+                                let venuewAddress = String(resultsArray[i]["venue_address"]!!)
+                                let cityName = String(resultsArray[i]["city_name"]!!)
+                                
+                                print(pinTitle)
+                                print(pinSubtitle)
+                                print(pinLat)
+                                print(pinLng)
+                                let pinLocation : CLLocationCoordinate2D = CLLocationCoordinate2DMake(CLLocationDegrees(pinLat!), CLLocationDegrees( pinLng!))
+                                
+                                //let objectAnnotation = MKPointAnnotation()
+                                //
+                                //                           objectAnnotation.coordinate = pinLocation
+                                //                            objectAnnotation.title = pinTitle
+                                //                            objectAnnotation.subtitle = pinSubtitle
+                                
+                                let objectAnnotation = Capital(title: pinTitle, subtitle: "", coordinate: pinLocation, info: [startTime, venueName, venuewAddress, cityName, pinDescription])
+                                self.mapView.addAnnotation(objectAnnotation)
                                 //self.mapView.reloadInputViews()
-                            })
+                            }
+                        })
                         
                     }
                 }
@@ -101,10 +109,10 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
             }
             
         }// end of task = session.dataTaskWithURL
-}
-
+    }
+    
     @IBOutlet weak var mapView: MKMapView!
-   
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -121,17 +129,17 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         updateLabel()
         
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-
+    
     func mapView(mapView: MKMapView, viewForAnnotation annotation: MKAnnotation) -> MKAnnotationView? {
         // 1
         let identifier = "Capital"
         if annotation is Capital {
-        
+            
             var annotationView = mapView.dequeueReusableAnnotationViewWithIdentifier(identifier)
             if annotationView == nil {
                 //4
@@ -151,37 +159,50 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         return nil
     }
     
-    func eventSaver (){
+    func eventSaver (title: String, info: [String]){
         print("save this event")
+        print("title: \(title), info:\(info)")
+        
         // save the selected event in core data
-    
+        let entityDes = NSEntityDescription.entityForName("EventTable", inManagedObjectContext: manageObjContext)
+        favEvent = EventTable(entity: entityDes!, insertIntoManagedObjectContext: manageObjContext)
+        
+        favEvent!.title = title
+        favEvent!.time = info[0]
+        favEvent!.venue = info[1]
+        favEvent!.address = info[2]+", "+info[3]
+        do{
+            try manageObjContext.save()
+        }catch{
+            print("\(error)")
+        }
     }
     
-func mapView(mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
-    let capital = view.annotation as! Capital
-    let placeName = capital.title
-    let placeInfo = capital.info
-    //print(placeInfo)
-    
-    
-    let ac = UIAlertController(title: placeName, message: "Strat Time: \(placeInfo[0])\n Venue: \(placeInfo[1])\n Address: \(placeInfo[2]), \(placeInfo[3]) \n Description: \(placeInfo[4])", preferredStyle: .ActionSheet)
-   
-    ac.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil ))
-    ac.addAction(UIAlertAction(title: "Save", style: .Default, handler: {(alert: UIAlertAction!) in self.eventSaver() }))
-    
-    let height:NSLayoutConstraint = NSLayoutConstraint(item: ac.view, attribute: NSLayoutAttribute.Height, relatedBy: NSLayoutRelation.GreaterThanOrEqual, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 1, constant: self.view.frame.height * 0.80)
-    ac.view.addConstraint(height);
-    
-    presentViewController(ac, animated: true, completion: nil)
+    func mapView(mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
+        let capital = view.annotation as! Capital
+        let placeName = capital.title
+        let placeInfo = capital.info
+        print("placeName: \(placeName), placeInfo: \(placeInfo)")
+        
+        
+        let ac = UIAlertController(title: placeName, message: "Strat Time: \(placeInfo[0])\n Venue: \(placeInfo[1])\n Address: \(placeInfo[2]), \(placeInfo[3]) \n Description: \(placeInfo[4])", preferredStyle: .ActionSheet)
+        
+        ac.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil ))
+        ac.addAction(UIAlertAction(title: "Save", style: .Default, handler: {(alert: UIAlertAction!) in self.eventSaver(placeName!, info: placeInfo) }))
+        
+        let height:NSLayoutConstraint = NSLayoutConstraint(item: ac.view, attribute: NSLayoutAttribute.Height, relatedBy: NSLayoutRelation.GreaterThanOrEqual, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 1, constant: self.view.frame.height * 0.80)
+        ac.view.addConstraint(height);
+        
+        presentViewController(ac, animated: true, completion: nil)
     }
     
-//###############################################################################################
-//###   Picker View
-//###############################################################################################
+    //###############################################################################################
+    //###   Picker View
+    //###############################################################################################
     
     
     let pickerData = [["Today", "This Week", "This Weekend", "This Month"],
-                      ["Music","Music Festivals","Comedy","Family","Performing Arts","Museums","Sports","Science", "Exhibits"]]
+                      ["Night Life","Music","Music Festivals","Comedy","Family","Performing Arts","Museums","Sports","Science", "Exhibits"]]
     
     enum PickerComponent:Int{
         case date = 0
@@ -201,9 +222,9 @@ func mapView(mapView: MKMapView, annotationView view: MKAnnotationView, calloutA
         selectedCategory = category
     }
     
-//    func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {
-//        return 1
-//    }
+    //    func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {
+    //        return 1
+    //    }
     //MARK -Delgates and DataSource
     func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         updateLabel()
@@ -221,23 +242,23 @@ func mapView(mapView: MKMapView, annotationView view: MKAnnotationView, calloutA
     }
     
     
-//    func pickerView(pickerView: UIPickerView, rowHeightForComponent component: Int) -> CGFloat {
-//        return 15.0
-//    }
-//    
+    //    func pickerView(pickerView: UIPickerView, rowHeightForComponent component: Int) -> CGFloat {
+    //        return 15.0
+    //    }
+    //
     
-
+    
     func pickerView(pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusingView view: UIView?) -> UIView {
         var pickerLabel = view as! UILabel!
         if view == nil {  //if no label there yet
             pickerLabel = UILabel()
             //color the label's background
             let hue = CGFloat(row)/CGFloat(pickerData.count)
-//            pickerLabel.backgroundColor = UIColor(hue: hue, saturation: 1.0, brightness: 1.0, alpha: 1.0)
+            //            pickerLabel.backgroundColor = UIColor(hue: hue, saturation: 1.0, brightness: 1.0, alpha: 1.0)
         }
         let titleData = pickerData[component][row]
         let myTitle = NSAttributedString(string: titleData, attributes: [NSFontAttributeName:UIFont(name: "Georgia", size: 12.0)!,NSForegroundColorAttributeName:UIColor.blackColor()])
-       pickerLabel!.attributedText = myTitle
+        pickerLabel!.attributedText = myTitle
         pickerLabel!.textAlignment = .Center
         
         return pickerLabel

@@ -36,6 +36,8 @@ class eventModel {
         }
         
         switch (eventCategory){
+        case "Night Life":
+            category = "singles_social"
         case "Music":
              category = "music"
         case "Music Festivals":
