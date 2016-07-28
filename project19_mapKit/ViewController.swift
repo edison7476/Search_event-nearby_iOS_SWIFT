@@ -65,9 +65,8 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
                     if let results = jsonResult["events"]!["event"]{
                        // print(results)
                         let resultsArray = results as! NSArray!
-                        
+                        print(resultsArray.count)
                         //print(resultsArray)
-                        
                         
                         dispatch_async(dispatch_get_main_queue(), {
                             self.mapView.removeAnnotations(self.mapView.annotations)
@@ -82,7 +81,8 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
                                 let venueName = String(resultsArray[i]["venue_name"]!!)
                                 let venuewAddress = String(resultsArray[i]["venue_address"]!!)
                                 let cityName = String(resultsArray[i]["city_name"]!!)
-                                
+                                print(resultsArray[i]["image"]!!["medium"]!!["url"])
+                                let eventImage = String(resultsArray[i]["image"]!!["medium"]!!["url"]!!)
                                 print(pinTitle)
                                 print(pinSubtitle)
                                 print(pinLat)
@@ -95,7 +95,8 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
                                 //                            objectAnnotation.title = pinTitle
                                 //                            objectAnnotation.subtitle = pinSubtitle
                                 
-                                let objectAnnotation = Capital(title: pinTitle, subtitle: "", coordinate: pinLocation, info: [startTime, venueName, venuewAddress, cityName, pinDescription])
+                                let objectAnnotation = Capital(title: pinTitle, subtitle: "", coordinate: pinLocation, info: [startTime, venueName, venuewAddress, cityName, pinDescription, eventImage])
+                                
                                 self.mapView.addAnnotation(objectAnnotation)
                                 //self.mapView.reloadInputViews()
                             }
@@ -146,7 +147,10 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
                 annotationView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: identifier)
                 annotationView!.canShowCallout = true
                 
-                let btn = UIButton(type: .DetailDisclosure)
+                let btn = UIButton(type: .Custom)
+                let moreInfoImage = UIImage(named: "moreInfo4")
+                btn.setImage(moreInfoImage, forState: .Normal)
+                btn.frame = CGRectMake(0, 0, 30, 30)
                 annotationView!.rightCalloutAccessoryView = btn
             } else {
                 // 6
@@ -182,6 +186,7 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         let capital = view.annotation as! Capital
         let placeName = capital.title
         let placeInfo = capital.info
+        
         print("placeName: \(placeName), placeInfo: \(placeInfo)")
         
         
@@ -190,8 +195,8 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         ac.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil ))
         ac.addAction(UIAlertAction(title: "Save", style: .Default, handler: {(alert: UIAlertAction!) in self.eventSaver(placeName!, info: placeInfo) }))
         
-        let height:NSLayoutConstraint = NSLayoutConstraint(item: ac.view, attribute: NSLayoutAttribute.Height, relatedBy: NSLayoutRelation.GreaterThanOrEqual, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 1, constant: self.view.frame.height * 0.80)
-        ac.view.addConstraint(height);
+//        let height:NSLayoutConstraint = NSLayoutConstraint(item: ac.view, attribute: NSLayoutAttribute.Height, relatedBy: NSLayoutRelation.GreaterThanOrEqual, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 1, constant: self.view.frame.height * 0.80)
+//        ac.view.addConstraint(height);
         
         presentViewController(ac, animated: true, completion: nil)
     }
@@ -253,11 +258,11 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         if view == nil {  //if no label there yet
             pickerLabel = UILabel()
             //color the label's background
-            let hue = CGFloat(row)/CGFloat(pickerData.count)
-            //            pickerLabel.backgroundColor = UIColor(hue: hue, saturation: 1.0, brightness: 1.0, alpha: 1.0)
+            let hue = CGFloat(row)/CGFloat(pickerData[component].count)
+            pickerLabel.backgroundColor = UIColor(hue: hue, saturation: 1.0, brightness: 1.0, alpha: 1.0)
         }
         let titleData = pickerData[component][row]
-        let myTitle = NSAttributedString(string: titleData, attributes: [NSFontAttributeName:UIFont(name: "Georgia", size: 12.0)!,NSForegroundColorAttributeName:UIColor.blackColor()])
+        let myTitle = NSAttributedString(string: titleData, attributes: [NSFontAttributeName:UIFont(name: "Helvetica-Bold", size: 15.0)!,NSForegroundColorAttributeName:UIColor.blackColor()])
         pickerLabel!.attributedText = myTitle
         pickerLabel!.textAlignment = .Center
         

@@ -71,7 +71,7 @@ class eventModel {
         print(eventdate)
         print(category)
         // Specify the url that we will be sending the GET Request to
-        let url = NSURL(string: "http://api.eventful.com/json/events/search?app_key=2gS7597vgV7hhSL8&within=\(dist)&category=\(category)&date=\(eventdate)&where=\(lati),\(lngt)&sort_order=popularity")
+        let url = NSURL(string: "http://api.eventful.com/json/events/search?app_key=2gS7597vgV7hhSL8&within=\(dist)&category=\(category)&date=\(eventdate)&where=\(lati),\(lngt)&sort_order=popularity&page_size=25")
         print("*********** printing API request URL ****************")
         print(url)
         // Create an NSURLSession to handle the request tasks

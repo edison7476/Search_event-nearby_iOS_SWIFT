@@ -11,7 +11,11 @@ import CoreData
 class favoriteTableViewController: UITableViewController {
 
     var savedEvents = [EventTable]()
-       var manageObjContext = (UIApplication.sharedApplication().delegate as! AppDelegate).managedObjectContext
+    var manageObjContext = (UIApplication.sharedApplication().delegate as! AppDelegate).managedObjectContext
+    
+    
+    @IBOutlet weak var venueLabel: UILabel!
+    @IBOutlet weak var addressLabel: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -64,10 +68,18 @@ class favoriteTableViewController: UITableViewController {
         let cell = tableView.dequeueReusableCellWithIdentifier("favCell", forIndexPath: indexPath)
 
         cell.textLabel?.text = savedEvents[indexPath.row].title
+        //cell.detailTextLabel?.baselineAdjustment.rawValue
+        
+        cell.detailTextLabel?.text = "\(savedEvents[indexPath.row].time!)\n \(savedEvents[indexPath.row].venue!) \n \(savedEvents[indexPath.row].address!)"
+        cell.detailTextLabel?.numberOfLines = 3
+        cell.detailTextLabel?.textColor = UIColor.blueColor()
+//        cell.textLabel?.text = savedEvents[indexPath.row].venue
+//        cell.textLabel?.text = savedEvents[indexPath.row].address
 
         return cell
     }
     
+
     override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         // removing the cell from CoreData
         manageObjContext.deleteObject(savedEvents[indexPath.row])
